@@ -7,7 +7,7 @@ edition = "2018"
 license = "MIT"
 description = "Platform-agnostic Rust driver for the MLP3115 pressure sensor."
 readme = "README.md"
-keywords = ["pressure", "altitude", "sensor", "i2c", "driver", "embedded-hal-driver"]
+keywords = ["pressure", "altitude", "i2c", "driver", "embedded-hal-driver"]
 categories = ["embedded", "hardware-support", "no-std"]
 
 [dependencies]
