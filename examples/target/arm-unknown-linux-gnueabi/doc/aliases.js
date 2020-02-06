@@ -1,0 +1,9 @@
+var ALIASES = {};
+ALIASES["cast"] = {};
+ALIASES["embedded_hal"] = {};
+ALIASES["lazy_static"] = {};
+ALIASES["libc"] = {};
+ALIASES["mpl3115"] = {};
+ALIASES["mpl3115_test"] = {};
+ALIASES["rppal"] = {};
+ALIASES["void"] = {};

@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `spi` mod in crate `rppal`."><meta name="keywords" content="rust, rustlang, rust-lang, spi"><title>rppal::spi - Rust</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../rppal/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a><p class='location'>Module spi</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'><a href='../index.html'>rppal</a></p><script>window.sidebarCurrent = {name: 'spi', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../src/rppal/spi.rs.html#21-648' title='goto source code'>[src]</a></span><span class='in-band'>Module <a href='../index.html'>rppal</a>::<wbr><a class="mod" href=''>spi</a></span></h1><div class='docblock'><p>Interface for the main and auxiliary SPI peripherals.</p>
+<p>RPPAL provides access to the available SPI buses by using the <code>spidev</code> device
+interface through <code>/dev/spidevB.S</code>, where B points to an SPI bus (0, 1, 2), and S to
+a Slave Select pin (0, 1, 2). Which of these buses and pins is available depends on
+your Raspberry Pi model and configuration, as explained below.</p>
+<h2 id="spi-buses" class="section-header"><a href="#spi-buses">SPI buses</a></h2>
+<p>The Raspberry Pi's GPIO header exposes several SPI buses. SPI0 is available
+on all Raspberry Pi models. SPI1 is available on models with a 40-pin
+header. SPI2 is only available on the Compute and Compute 3.</p>
+<p>SPI0 is disabled by default. You can enable it by running
+<code>sudo raspi-config</code>, or by manually adding <code>dtparam=spi=on</code> to
+<code>/boot/config.txt</code>. The associated pins are listed below.</p>
+<ul>
+<li>MISO: BCM GPIO 9 (physical pin 21)</li>
+<li>MOSI: BCM GPIO 10 (physical pin 19)</li>
+<li>SCLK: BCM GPIO 11 (physical pin 23)</li>
+<li>SS: <a href="enum.SlaveSelect.html"><code>Ss0</code></a> BCM GPIO 8 (physical pin 24), <a href="enum.SlaveSelect.html"><code>Ss1</code></a> BCM GPIO 7 (physical pin 26)</li>
+</ul>
+<p>SPI1 is an auxiliary peripheral that's referred to as mini SPI. According
+to the BCM2835 documentation, using higher clock speeds on SPI1 requires
+additional CPU time compared to SPI0, caused by smaller FIFOs and no DMA
+support. It doesn't support <a href="enum.Mode.html"><code>Mode1</code></a> or <a href="enum.Mode.html"><code>Mode3</code></a>. SPI1 can be enabled by
+adding <code>dtoverlay=spi1-3cs</code> to <code>/boot/config.txt</code>. Replace <code>3cs</code> with
+either <code>2cs</code> or <code>1cs</code> if you only require 2 or 1 Slave Select pins.
+The associated pins are listed below.</p>
+<ul>
+<li>MISO: BCM GPIO 19 (physical pin 35)</li>
+<li>MOSI: BCM GPIO 20 (physical pin 38)</li>
+<li>SCLK: BCM GPIO 21 (physical pin 40)</li>
+<li>SS: <a href="enum.SlaveSelect.html"><code>Ss0</code></a> BCM GPIO 18 (physical pin 12), <a href="enum.SlaveSelect.html"><code>Ss1</code></a> BCM GPIO 17 (physical pin 11), <a href="enum.SlaveSelect.html"><code>Ss2</code></a> BCM GPIO 16 (physical pin 36)</li>
+</ul>
+<p>SPI2 shares the same characteristics and limitations as SPI1. It can be
+enabled by adding <code>dtoverlay=spi2-3cs</code> to <code>/boot/config.txt</code>. Replace
+<code>3cs</code> with either <code>2cs</code> or <code>1cs</code> if you only require 2 or 1 Slave Select
+pins. The associated pins are listed below.</p>
+<ul>
+<li>MISO: BCM GPIO 40</li>
+<li>MOSI: BCM GPIO 41</li>
+<li>SCLK: BCM GPIO 42</li>
+<li>SS: <a href="enum.SlaveSelect.html"><code>Ss0</code></a> BCM GPIO 43, <a href="enum.SlaveSelect.html"><code>Ss1</code></a> BCM GPIO 44, <a href="enum.SlaveSelect.html"><code>Ss2</code></a> BCM GPIO 45</li>
+</ul>
+<p>The GPIO pin numbers mentioned above are part of the default configuration.
+Some of their functionality can be moved to different pins. Read
+<code>/boot/overlays/README</code> for more information.</p>
+<h2 id="buffer-size-limits" class="section-header"><a href="#buffer-size-limits">Buffer size limits</a></h2>
+<p>By default, <code>spidev</code> can handle up to 4096 bytes in a single transfer. You
+can increase this limit to a maximum of 65536 bytes by appending
+<code>spidev.bufsiz=65536</code> to the single line of parameters in <code>/boot/cmdline.txt</code>.
+Remember to reboot the Raspberry Pi afterwards. The current value of bufsiz
+can be checked with <code>cat /sys/module/spidev/parameters/bufsiz</code>.</p>
+<h2 id="not-supported" class="section-header"><a href="#not-supported">Not supported</a></h2>
+<p>Some features exposed by the generic <code>spidev</code> interface aren't fully
+supported by the underlying driver or the BCM283x SoC: <code>SPI_LSB_FIRST</code> (LSB
+first bit order), <code>SPI_3WIRE</code> (bidirectional mode), <code>SPI_LOOP</code> (loopback mode),
+<code>SPI_NO_CS</code> (no Slave Select), <code>SPI_READY</code> (slave ready signal),
+<code>SPI_TX_DUAL</code>/<code>SPI_RX_DUAL</code> (dual SPI), <code>SPI_TX_QUAD</code>/<code>SPI_RX_QUAD</code> (quad SPI),
+and any number of bits per word other than 8.</p>
+<p>If your slave device requires <code>SPI_LSB_FIRST</code>, you can use the
+<a href="fn.reverse_bits.html"><code>reverse_bits</code></a> function instead to reverse the bit order in software.</p>
+<p><code>SPI_LOOP</code> mode can be achieved by connecting the MOSI and MISO pins
+together.</p>
+<p><code>SPI_NO_CS</code> can be implemented by connecting the Slave Select pin on your
+slave device to any other available GPIO pin on the Pi, and manually
+changing it to high and low as needed.</p>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table><tr class='module-item'><td><a class="struct" href="struct.Segment.html" title='rppal::spi::Segment struct'>Segment</a></td><td class='docblock-short'><p>Part of a multi-segment transfer.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Spi.html" title='rppal::spi::Spi struct'>Spi</a></td><td class='docblock-short'><p>Provides access to the Raspberry Pi's SPI peripherals.</p>
+</td></tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table><tr class='module-item'><td><a class="enum" href="enum.BitOrder.html" title='rppal::spi::BitOrder enum'>BitOrder</a></td><td class='docblock-short'><p>Bit orders.</p>
+</td></tr><tr class='module-item'><td><a class="enum" href="enum.Bus.html" title='rppal::spi::Bus enum'>Bus</a></td><td class='docblock-short'><p>SPI buses.</p>
+</td></tr><tr class='module-item'><td><a class="enum" href="enum.Error.html" title='rppal::spi::Error enum'>Error</a></td><td class='docblock-short'><p>Errors that can occur when accessing the SPI peripheral.</p>
+</td></tr><tr class='module-item'><td><a class="enum" href="enum.Mode.html" title='rppal::spi::Mode enum'>Mode</a></td><td class='docblock-short'><p>SPI modes indicating the clock polarity and phase.</p>
+</td></tr><tr class='module-item'><td><a class="enum" href="enum.Polarity.html" title='rppal::spi::Polarity enum'>Polarity</a></td><td class='docblock-short'><p>Slave Select polarities.</p>
+</td></tr><tr class='module-item'><td><a class="enum" href="enum.SlaveSelect.html" title='rppal::spi::SlaveSelect enum'>SlaveSelect</a></td><td class='docblock-short'><p>Slave Select pins.</p>
+</td></tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table><tr class='module-item'><td><a class="fn" href="fn.reverse_bits.html" title='rppal::spi::reverse_bits fn'>reverse_bits</a></td><td class='docblock-short'><p>Reverses the bits of each byte in <code>buffer</code>.</p>
+</td></tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table><tr class='module-item'><td><a class="type" href="type.Result.html" title='rppal::spi::Result type'>Result</a></td><td class='docblock-short'><p>Result type returned from methods that can have <code>spi::Error</code>s.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "rppal";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script defer src="../../search-index.js"></script></body></html>

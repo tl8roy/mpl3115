@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Channel","PWM channels."],["Error","Errors that can occur when accessing the PWM peripheral."],["Polarity","Output polarities."]],"struct":[["Pwm","Provides access to the Raspberry Pi's PWM peripheral."]],"type":[["Result","Result type returned from methods that can have `pwm::Error`s."]]});

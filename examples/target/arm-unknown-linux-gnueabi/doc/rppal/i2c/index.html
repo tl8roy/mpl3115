@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `i2c` mod in crate `rppal`."><meta name="keywords" content="rust, rustlang, rust-lang, i2c"><title>rppal::i2c - Rust</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../rppal/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a><p class='location'>Module i2c</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'><a href='../index.html'>rppal</a></p><script>window.sidebarCurrent = {name: 'i2c', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../src/rppal/i2c.rs.html#21-658' title='goto source code'>[src]</a></span><span class='in-band'>Module <a href='../index.html'>rppal</a>::<wbr><a class="mod" href=''>i2c</a></span></h1><div class='docblock'><p>Interface for the I2C peripheral.</p>
+<p>The Broadcom Serial Controller (BSC) peripheral controls a proprietary bus
+compliant with the I2C bus/interface. RPPAL communicates with the BSC
+using the <code>i2cdev</code> device interface.</p>
+<h2 id="i2c-buses" class="section-header"><a href="#i2c-buses">I2C buses</a></h2>
+<p>The Raspberry Pi's BCM283x SoC supports three hardware I2C buses, however
+only the I2C bus on physical pins 3 and 5 should be used to communicate
+with slave devices. The other two buses are used internally as an HDMI
+interface, and for HAT identification.</p>
+<p>The I2C bus connected to physical pins 3 (SDA) and 5 (SCL) is disabled by
+default. You can enable it through <code>sudo raspi-config</code>, or by manually
+adding <code>dtparam=i2c_arm=on</code> to <code>/boot/config.txt</code>. Remember to reboot
+the Raspberry Pi afterwards.</p>
+<p>In addition to the hardware I2C buses, it's possible to configure a
+bit-banged software I2C bus on any available GPIO pins through the <code>i2c-gpio</code>
+device tree overlay. More details on enabling and configuring <code>i2c-gpio</code>
+can be found in <code>/boot/overlays/README</code>.</p>
+<h2 id="transmission-speed" class="section-header"><a href="#transmission-speed">Transmission speed</a></h2>
+<p>The BSC supports I2C data transfer rates up to 400 kbit/s (Fast-mode).</p>
+<p>By default, the I2C bus clock speed is set to 100 kHz. Transferring
+1 bit takes 1 clock cycle. You can change the
+transfer rate by adding <code>dtparam=i2c_arm_baudrate=X</code> to
+<code>/boot/config.txt</code>, where <code>X</code> should be replaced with the
+clock frequency in hertz (Hz). Remember to reboot
+the Raspberry Pi afterwards.</p>
+<h2 id="not-supported" class="section-header"><a href="#not-supported">Not supported</a></h2>
+<p>Some I2C and SMBus features aren't fully supported by the <code>i2cdev</code> interface, the underlying driver or
+the BCM283x SoC: 10-bit slave addresses, SMBus Block Read, SMBus Block Process Call, SMBus Host Notify,
+SMBus Read/Write 32/64, and the SMBus Address Resolution Protocol.</p>
+<p>While clock stretching is supported, a bug exists in the implementation on the BCM283x SoC that will result
+in corrupted data when a slave device uses clock stretching at arbitrary points during the transfer.
+Clock stretching only works properly during read operations, directly after the ACK phase, when the additional
+delay is longer than half of a clock period. More information can be found <a href="https://elinux.org/BCM2835_datasheet_errata#p35_I2C_clock_stretching">here</a>.</p>
+<p>A possible workaround for slave devices that require clock stretching at other points during the transfer is
+to use a bit-banged software I2C bus by configuring the <code>i2c-gpio</code> device tree overlay as described in <code>/boot/overlays/README</code>.</p>
+<h2 id="troubleshooting" class="section-header"><a href="#troubleshooting">Troubleshooting</a></h2><h3 id="permission-denied" class="section-header"><a href="#permission-denied">Permission denied</a></h3>
+<p>If <a href="struct.I2c.html#method.new"><code>new</code></a> or <a href="struct.I2c.html#method.with_bus"><code>with_bus</code></a> returns an <code>io::ErrorKind::PermissionDenied</code>
+error, make sure the file permissions for <code>/dev/i2c-1</code> or <code>/dev/i2c-0</code>
+are correct, and the current user is a member of the <code>i2c</code> group.</p>
+<h3 id="timed-out" class="section-header"><a href="#timed-out">Timed out</a></h3>
+<p>Transactions return an <code>io::ErrorKind::TimedOut</code> error when their duration
+exceeds the timeout value. You can change the timeout using <a href="struct.I2c.html#method.set_timeout"><code>set_timeout</code></a>.</p>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table><tr class='module-item'><td><a class="struct" href="struct.Capabilities.html" title='rppal::i2c::Capabilities struct'>Capabilities</a></td><td class='docblock-short'><p>Lists the features supported by the underlying drivers.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.I2c.html" title='rppal::i2c::I2c struct'>I2c</a></td><td class='docblock-short'><p>Provides access to the Raspberry Pi's I2C peripheral.</p>
+</td></tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table><tr class='module-item'><td><a class="enum" href="enum.Error.html" title='rppal::i2c::Error enum'>Error</a></td><td class='docblock-short'><p>Errors that can occur when accessing the I2C peripheral.</p>
+</td></tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table><tr class='module-item'><td><a class="type" href="type.Result.html" title='rppal::i2c::Result type'>Result</a></td><td class='docblock-short'><p>Result type returned from methods that can have <code>i2c::Error</code>s.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "rppal";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script defer src="../../search-index.js"></script></body></html>

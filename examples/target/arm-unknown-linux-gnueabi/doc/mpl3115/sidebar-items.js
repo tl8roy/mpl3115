@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Error",""],["Mode","Device Mode Useful for \"non\" blocking measurements"],["PressureAlt","Pressure or Altitude Mode Toggle as required"]],"struct":[["MPL3115A2","`MPL3115A2` driver Will start off deactive and in the PressureAlt config requested"]]});

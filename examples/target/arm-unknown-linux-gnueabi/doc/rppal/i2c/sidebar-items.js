@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Error","Errors that can occur when accessing the I2C peripheral."]],"struct":[["Capabilities","Lists the features supported by the underlying drivers."],["I2c","Provides access to the Raspberry Pi's I2C peripheral."]],"type":[["Result","Result type returned from methods that can have `i2c::Error`s."]]});

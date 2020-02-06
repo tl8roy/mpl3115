@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Delay","Implements the `embedded-hal` `DelayMs` and `DelayUs` traits."],["Hertz","Newtype wrapper for `f64`. Converts into `Duration`."],["Timer","Implements the `embedded-hal` `CountDown` trait."]]});

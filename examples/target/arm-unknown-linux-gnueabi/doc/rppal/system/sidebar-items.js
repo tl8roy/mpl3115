@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Error","Errors that can occur when trying to identify the Raspberry Pi hardware."],["Model","Identifiable Raspberry Pi models."],["SoC","Identifiable Raspberry Pi SoCs."]],"struct":[["DeviceInfo","Retrieves Raspberry Pi device information."]],"type":[["Result","Result type returned from methods that can have `system::Error`s."]]});
