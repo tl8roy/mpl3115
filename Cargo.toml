@@ -11,7 +11,7 @@ keywords = ["pressure", "altitude", "i2c", "driver", "embedded-hal-driver"]
 categories = ["embedded", "hardware-support", "no-std"]
 
 [dependencies]
-embedded-hal = "0.2"
+embedded-hal = "1.0.0"
 
 [dependencies.cast]
 default-features = false
