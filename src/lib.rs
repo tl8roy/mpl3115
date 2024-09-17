@@ -51,9 +51,9 @@ pub enum PressureAlt {
 /// `MPL3115A2` driver
 ///
 /// Will start off deactivated and in the PressureAlt mode set
-pub struct MPL3115A2<I2c> {
+pub struct MPL3115A2<T> {
     /// The concrete I²C device implementation
-    i2c: I2c,
+    i2c: T,
 
     /// Mode (Inactive, Active, Taking Sample)
     mode: Mode,
