@@ -2,7 +2,7 @@
 name = "mpl3115"
 version = "0.2.0"
 authors = ["Tristan Lostroh <tl8roy@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 license = "MIT"
 description = "Platform-agnostic Rust driver for the MLP3115 pressure sensor."
@@ -15,7 +15,10 @@ embedded-hal = "1.0.0"
 
 [dependencies.cast]
 default-features = false
-version = "0.2"
+version = "0.3"
 
 [profile.release]
 lto = true
+
+[dev-dependencies]
+rppal = { version = "0.11.3", features = ["hal","hal-unproven"] }

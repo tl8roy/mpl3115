@@ -181,13 +181,13 @@ where
 
     /// Check the PDR bit for new data
     pub fn check_pa_reading(&mut self) -> Result<bool, Error<E>> {
-        let status_reg = self.read_reg(Register::STATUS).map_err(Error::I2c)?;
+        let status_reg = self.read_reg(Register::Status).map_err(Error::I2c)?;
         Ok(status_reg & PDR != 0)
     }
 
     /// Check the TDR bit for new data
     pub fn check_temp_reading(&mut self) -> Result<bool, Error<E>> {
-        let status_reg = self.read_reg(Register::STATUS).map_err(Error::I2c)?;
+        let status_reg = self.read_reg(Register::Status).map_err(Error::I2c)?;
 
         Ok(status_reg & TDR != 0)
     }
